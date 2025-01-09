@@ -1,53 +1,57 @@
-let map, infoWindow, autocomplete;
+let map;
+let marker;
+const infoWindow = new google.maps.InfoWindow();
 
 function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-        center: { lat: -25.7479, lng: 28.2293 },
-        zoom: 10,
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: -34.397, lng: 150.644 },
+        zoom: 8
     });
 
-    infoWindow = new google.maps.InfoWindow();
+    const autocomplete = new google.maps.places.Autocomplete(document.getElementById("autocomplete"));
+    autocomplete.bindTo("bounds", map);
 
-    autocomplete = new google.maps.places.Autocomplete(document.getElementById('search-box'));
-    autocomplete.bindTo('bounds', map);
-
-    autocomplete.addListener('place_changed', function () {
-        infoWindow.close();
+    autocomplete.addListener("place_changed", () => {
         const place = autocomplete.getPlace();
         if (!place.geometry) {
             return;
         }
-
-        if (place.geometry.viewport) {
-            map.fitBounds(place.geometry.viewport);
-        } else {
-            map.setCenter(place.geometry.location);
-            map.setZoom(15);
-        }
-
-        createMarker(place.geometry.location, place.name);
+        map.setCenter(place.geometry.location);
+        map.setZoom(15);
+        dropPin(place.geometry.location);
+        showInfoWindow(place);
     });
 
-    map.addListener('click', function (event) {
-        const latLng = event.latLng;
-        createMarker(latLng, 'Selected Location');
-        infoWindow.setContent('Latitude: ' + latLng.lat() + '<br>Longitude: ' + latLng.lng());
-        infoWindow.open(map);
+    map.addListener("click", (event) => {
+        dropPin(event.latLng);
+        getPlaceDetails(event.latLng);
     });
 }
 
-function createMarker(position, title) {
-    const marker = new google.maps.Marker({
-        position,
-        map,
-        title,
+function dropPin(location) {
+    if (marker) {
+        marker.setMap(null);
+    }
+    marker = new google.maps.Marker({
+        position: location,
+        map: map
     });
+}
 
-    google.maps.event.addListener(marker, 'click', function () {
-        infoWindow.setContent(title);
-        infoWindow.open(map, marker);
+function showInfoWindow(place) {
+    const content = `<div><strong>${place.name}</strong><br>${place.formatted_address}</div>`;
+    infoWindow.setContent(content);
+    infoWindow.open(map, marker);
+}
+
+function getPlaceDetails(location) {
+    const service = new google.maps.places.PlacesService(map);
+    service.getDetails({ location: location }, (place, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            dropPin(location);
+            showInfoWindow(place);
+        }
     });
 }
 
 window.onload = initMap;
-
