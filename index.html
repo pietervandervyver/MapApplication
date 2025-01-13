@@ -3,68 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Google Map</title>
+    <title>Case Completion Search with Google Maps</title>
+    <link rel="stylesheet" href="css/styles.css">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkubbTUBLo0IzVHU3qkjrkae5GydkB2QA&libraries=places"></script>
-    <style>
-        #map {
-            height: 500px;
-            width: 100%;
-        }
-    </style>
 </head>
 <body>
-    <input id="autocomplete" placeholder="Enter a location" type="text" />
+    <h1>Pieter's Map Info Page</h1>
+    <input id="autocomplete" placeholder="Search for a location..." type="text" />
     <div id="map"></div>
-    <script src="script.js"></script>
-</body>
-    <body>
-    <h3>Google Maps with Info Window</h3>
-    <div id="map"></div>
+    <div id="info"></div>
 
-    <script>
-        function initMap() {
-            // Define the location
-            const location = { lat: 37.7749, lng: -122.4194 }; // Example: San Francisco
-
-            // Create a map centered on the location
-            const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 12,
-                center: location,
-            });
-
-            // Define the content of the info window
-            const contentString = `
-                <div>
-                    <h2>San Francisco</h2>
-                    <p>Known for its iconic Golden Gate Bridge, steep streets, and vibrant culture.</p>
-                    <ul>
-                        <li><strong>Population:</strong> 815,201</li>
-                        <li><strong>Famous Landmark:</strong> Golden Gate Bridge</li>
-                        <li><strong>Fun Fact:</strong> Alcatraz Island is just a ferry ride away!</li>
-                    </ul>
-                </div>
-            `;
-
-            // Create an info window
-            const infoWindow = new google.maps.InfoWindow({
-                content: contentString,
-            });
-
-            // Create a marker
-            const marker = new google.maps.Marker({
-                position: location,
-                map: map,
-                title: "San Francisco",
-            });
-
-            // Add a click listener to open the info window when the marker is clicked
-            marker.addListener("click", () => {
-                infoWindow.open(map, marker);
-            });
-        }
-
-        // Initialize the map when the page loads
-        window.onload = initMap;
-    </script>
+    <script src="js/map.js"></script>
+    <script src="js/info.js"></script>
 </body>
 </html>
