@@ -1,7 +1,7 @@
-// map.js
 let map;
 let marker;
 const infoWindow = new google.maps.InfoWindow();
+const infoDiv = document.getElementById("info");
 
 function initMap() {
     map = new google.maps.Map(document.getElementById("map"), {
@@ -24,9 +24,7 @@ function initMap() {
         showInfoWindow(place);
     });
 
-    // Add click event listener to the map
     map.addListener("click", (event) => {
-        // Get the clicked location
         const clickedLocation = event.latLng;
         dropPin(clickedLocation);
         getPlaceDetails(clickedLocation);
@@ -43,7 +41,19 @@ function dropPin(location) {
     });
 }
 
-// Function to get place details using reverse geocoding
+function showInfoWindow(place) {
+    const contentString = `
+        <div>
+            <h2>${place.name || 'Location'}</h2>
+            <p>${place.formatted_address || 'No address available'}</p>
+        </div>
+    `;
+    infoWindow.setContent(contentString);
+    infoWindow.open(map, marker);
+
+    infoDiv.innerHTML = contentString;
+}
+
 function getPlaceDetails(location) {
     const geocoder = new google.maps.Geocoder();
     geocoder.geocode({ location: location }, (results, status) => {
@@ -61,5 +71,4 @@ function getPlaceDetails(location) {
     });
 }
 
-// Initialize the map
 window.onload = initMap;
