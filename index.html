@@ -2,18 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Case Completion Search with Google Maps</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkubbTUBLo0IzVHU3qkjrkae5GydkB2QA&libraries=places"></script>
+    <title>Map Application</title>
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+        #info {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Pieter's Map Info Page</h1>
-    <input id="autocomplete" placeholder="Search for a location..." type="text" />
+    <input id="autocomplete" type="text" placeholder="Enter a location">
     <div id="map"></div>
     <div id="info"></div>
 
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
     <script src="js/map.js"></script>
-    <script src="js/info.js"></script>
 </body>
 </html>
